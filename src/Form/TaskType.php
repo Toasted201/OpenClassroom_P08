@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Task;
+use PhpParser\Node\Stmt\Label;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,8 +14,15 @@ class TaskType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('content', TextareaType::class)
+            ->add('title', null, [
+                'label' => "Titre"
+            ])
+            ->add(
+                'content',
+                TextareaType::class,
+                ['label' => 'Contenu'
+                ]
+            )
             //TODO add('author') ==> must be the user authenticated
         ;
     }

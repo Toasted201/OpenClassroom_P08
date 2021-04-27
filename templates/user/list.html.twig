@@ -4,6 +4,9 @@
 
 {% block header_title %}
 	<h1>Liste des utilisateurs</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un Utilsateur</a>
+    {% endif %}   
 {% endblock %}
 
 {% block body %}

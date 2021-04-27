@@ -23,6 +23,7 @@ class AppFixtures extends Fixture
         $user->setUsername('BobDoe');
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'passpass'));
         $user->setEmail('bobdoe@example.fr');
+        $user->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($user);
         $manager->flush();
@@ -35,8 +36,16 @@ class AppFixtures extends Fixture
             $taskTest->setTitle('Titre ' . $i);
             $taskTest->setContent('Content' . $i);
             $taskTest->setCreatedAt($date);
+            $taskTest->setUser($user);
             $manager->persist($taskTest);
         }
+        $manager->flush();
+
+        $taskTestAno = new Task();
+        $taskTestAno->setTitle('Tache sans User');
+        $taskTestAno->setContent('Content');
+        $taskTestAno->setCreatedAt($date);
+        $manager->persist($taskTestAno);
         $manager->flush();
     }
 }

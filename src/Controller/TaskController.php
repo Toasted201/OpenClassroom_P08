@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Repository\TaskRepository;
 use App\Form\TaskType;
+use App\Security\TaskVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,11 +51,13 @@ class TaskController extends AbstractController
     public function createAction(Request $request)
     {
         $task = new Task();
+        $user = $this->getUser();
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setUser($user);
             $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager->persist($task);
@@ -108,12 +112,21 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $task)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($task);
-        $entityManager->flush();
+        $user = $this->getUser();
 
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        if (($task->getUser() === null && $this->isGranted('ROLE_ADMIN')) || $user === $task->getUser()) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($task);
+            $entityManager->flush();
 
-        return $this->redirectToRoute('task_list');
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+
+            return $this->redirectToRoute('task_list');
+        } else {
+            $this->addFlash('error', 'Cette tâche ne peut être supprimée');
+
+            return $this->redirectToRoute('task_list');
+        }
     }
 }

@@ -47,11 +47,6 @@ class User implements UserInterface
      */
     private $email;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $tasks;
-
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -137,36 +132,6 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Task[]
-     */
-    public function getTasks(): Collection
-    {
-        return $this->tasks;
-    }
-
-    public function addTask(Task $task): self
-    {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTask(Task $task): self
-    {
-        if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
-            if ($task->getUser() === $this) {
-                $task->setUser(null);
-            }
-        }
 
         return $this;
     }

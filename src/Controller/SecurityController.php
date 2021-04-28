@@ -11,16 +11,6 @@ use Symfony\Component\Security\Core\Exception\LogicException;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/security", name="security")
-     */
-    public function index(): Response
-    {
-        return $this->render('security/index.html.twig', [
-            'controller_name' => 'SecurityController',
-        ]);
-    }
-
-    /**
      * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -42,7 +32,7 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new LogicException('This method can be blank - 
-        it will be intercepted by the logout key on your firewall.');
+        //throw new LogicException(
+            //'This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

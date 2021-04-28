@@ -91,6 +91,13 @@
             "php bin/console doctrine:database:create",
             "php bin/console doctrine:schema:update --force",
             "php bin/console doctrine:fixtures:load -n"
+        ],
+        "phpunit-start-test": [
+            "php bin/console doctrine:database:drop --env=test  --if-exists --force",
+            "php bin/console doctrine:database:create --env=test ",
+            "php bin/console doctrine:schema:update --env=test  --force",
+            "php bin/console doctrine:fixtures:load --env=test  -n",
+            "vendor/bin/simple-phpunit --coverage-html tests/test-coverage"
         ]
     },
     "conflict": {

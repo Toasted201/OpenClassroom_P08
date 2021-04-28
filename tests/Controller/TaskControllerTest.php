@@ -2,16 +2,19 @@
 
 namespace Tests\Controller;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskControllerTest extends WebTestCase
 {
     public function testCreateTask()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'BobDoe',
-            'PHP_AUTH_PW'   => 'passpass',
-        ));
+        $client = static::createClient();
+
+        $userRepository = static::$container->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy(['username' => 'BobDoe']);
+
+        $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/tasks/create');
 
@@ -30,10 +33,13 @@ class TaskControllerTest extends WebTestCase
 
     public function testEditTask()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'BobDoe',
-            'PHP_AUTH_PW'   => 'passpass',
-        ));
+        $client = static::createClient();
+
+        $userRepository = static::$container->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy(['username' => 'BobDoe']);
+
+        $client->loginUser($testUser);
+
         $crawler = $client->request('GET', '/tasks/1/edit');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
@@ -53,10 +59,12 @@ class TaskControllerTest extends WebTestCase
 
     public function testToggleTask()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'BobDoe',
-            'PHP_AUTH_PW'   => 'passpass',
-        ));
+        $client = static::createClient();
+
+        $userRepository = static::$container->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy(['username' => 'BobDoe']);
+
+        $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/tasks');
 
@@ -74,10 +82,12 @@ class TaskControllerTest extends WebTestCase
 
     public function testDeleteTask()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'BobDoe',
-            'PHP_AUTH_PW'   => 'passpass',
-        ));
+        $client = static::createClient();
+
+        $userRepository = static::$container->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy(['username' => 'BobDoe']);
+
+        $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/tasks');
 
@@ -93,8 +103,34 @@ class TaskControllerTest extends WebTestCase
 
 
         $client->followRedirect();
-        $this->assertStringContainsString('supprimée', $client->getResponse()->getContent());
-
-        //TODO Tester 'lien Task - User
+        $this->assertStringContainsString('La tâche a bien été supprimée.', $client->getResponse()->getContent());
     }
+
+    public function testDeleteTasknotCreated()
+    {
+        $client = static::createClient();
+
+        $userRepository = static::$container->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy(['username' => 'DanyDoe']);
+
+        $client->loginUser($testUser);
+
+        $crawler = $client->request('GET', '/tasks');
+
+        $form = $crawler
+        ->selectButton('Supprimer')
+        ->eq(2)
+        ->form()
+        ;
+
+        $crawler = $client->submit($form);
+
+        $this->assertTrue($client->getResponse()->isRedirection());
+
+
+        $client->followRedirect();
+        $this->assertStringContainsString('Cette tâche ne peut être supprimée', $client->getResponse()->getContent());
+    }
+
+    
 }

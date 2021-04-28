@@ -19,14 +19,33 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $userAdmin = new User();
+        $userAdmin->setUsername('BobDoe');
+        $userAdmin->setPassword($this->passwordEncoder->encodePassword($userAdmin, 'passpass'));
+        $userAdmin->setEmail('bobdoe@example.fr');
+        $userAdmin->setRoles(['ROLE_ADMIN']);
+
+        $manager->persist($userAdmin);
+        $manager->flush();
+
         $user = new User();
-        $user->setUsername('BobDoe');
+        $user->setUsername('DanyDoe');
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'passpass'));
-        $user->setEmail('bobdoe@example.fr');
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setEmail('danydoe@example.fr');
+        $user->setRoles(['ROLE_USER']);
 
         $manager->persist($user);
         $manager->flush();
+
+        $user = new User();
+        $user->setUsername('ZoeDoe');
+        $user->setPassword($this->passwordEncoder->encodePassword($user, 'passpass'));
+        $user->setEmail('zoedoe@example.fr');
+        $user->setRoles(['ROLE_USER']);
+
+        $manager->persist($user);
+        $manager->flush();
+
 
 
         $date = new DateTime();
@@ -36,7 +55,7 @@ class AppFixtures extends Fixture
             $taskTest->setTitle('Titre ' . $i);
             $taskTest->setContent('Content' . $i);
             $taskTest->setCreatedAt($date);
-            $taskTest->setUser($user);
+            $taskTest->setUser($userAdmin);
             $manager->persist($taskTest);
         }
         $manager->flush();

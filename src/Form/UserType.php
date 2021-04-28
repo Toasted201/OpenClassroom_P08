@@ -22,7 +22,6 @@ class UserType extends AbstractType
             ->add('username', null, [
                 'label' => "Nom d'utilisateur"
             ])
-            //->add('roles')
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux mots de passe doivent correspondre.',
@@ -50,7 +49,11 @@ class UserType extends AbstractType
                     'Utilisateur' => 'ROLE_USER',
                     'Administrateur' => 'ROLE_ADMIN'
                 ],
-                'label' => 'Role :'
+                'multiple' => false,
+                'expanded' => false,
+                'label' => 'Rôle :',
+                'empty_data' => ['ROLE_USER'],
+                'required' => true
                 ]);
 
                 //roles field data transformer

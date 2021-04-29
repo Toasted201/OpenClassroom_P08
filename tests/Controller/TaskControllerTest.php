@@ -3,6 +3,7 @@
 namespace Tests\Controller;
 
 use App\Repository\UserRepository;
+use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskControllerTest extends WebTestCase
@@ -115,22 +116,13 @@ class TaskControllerTest extends WebTestCase
 
         $client->loginUser($testUser);
 
-        $crawler = $client->request('GET', '/tasks');
+        $taskRepository = static::$container->get(TaskRepository::class);
+        $this->assertNotEmpty(
+            $taskRepository->findOneBy(['id' => '3']),
+            'La tâche à supprimer n\'existe pas'
+        );
 
-        $form = $crawler
-        ->selectButton('Supprimer')
-        ->eq(2)
-        ->form()
-        ;
-
-        $crawler = $client->submit($form);
-
-        $this->assertTrue($client->getResponse()->isRedirection());
-
-
-        $client->followRedirect();
-        $this->assertStringContainsString('Cette tâche ne peut être supprimée', $client->getResponse()->getContent());
+        $client->request('GET', '/tasks/3/delete');
+        $this->assertTrue($client->getResponse()->isForbidden());
     }
-
-    
 }

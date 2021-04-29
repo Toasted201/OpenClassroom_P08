@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Task;
 use App\Entity\User;
+use Exception;
 
 interface TaskManagerInterface
 {

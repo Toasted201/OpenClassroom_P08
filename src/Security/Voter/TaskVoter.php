@@ -14,7 +14,7 @@ class TaskVoter extends Voter
     private const EDIT = 'edit';
     private const DELETE = 'delete';
 
-    private $security;
+    private Security $security;
 
     public function __construct(Security $security)
     {
@@ -46,7 +46,7 @@ class TaskVoter extends Voter
         }
 
         // you know $subject is a Task object, thanks to `supports()`
-        /** @var Post $post */
+        /** @var Task $task */
         $task = $subject;
 
         switch ($attribute) {

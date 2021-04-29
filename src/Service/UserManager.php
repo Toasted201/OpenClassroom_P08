@@ -4,12 +4,13 @@ namespace App\Service;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserManager implements UserManagerInterface
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -18,7 +19,7 @@ class UserManager implements UserManagerInterface
     }
 
 
-    public function userForm(Form $form, User $user): void
+    public function userForm(FormInterface $form, User $user): void
     {
         $plainPassword = $form->get('password')->getData();
         $password = $this->passwordEncoder->encodePassword($user, $plainPassword);

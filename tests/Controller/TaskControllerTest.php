@@ -4,6 +4,7 @@ namespace Tests\Controller;
 
 use App\Repository\UserRepository;
 use App\Repository\TaskRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskControllerTest extends WebTestCase
@@ -30,6 +31,16 @@ class TaskControllerTest extends WebTestCase
 
         $this->assertStringContainsString('TestAuto', $client->getResponse()->getContent());
         $this->assertStringContainsString('La tâche a été bien été ajoutée.', $client->getResponse()->getContent());
+
+        $taskRepository = static::$container->get(TaskRepository::class);
+        $task = $taskRepository->findOneBy(['id' => '7']);
+
+        $now = new DateTime();
+        $taskDate = $task->getCreatedAt();
+        $interval = $now->diff($taskDate);
+        $nbJour = $interval->h;
+
+        $this->assertLessThanOrEqual('1', $nbJour, 'La date de création est fausse');
     }
 
     public function testEditTask()
@@ -76,9 +87,11 @@ class TaskControllerTest extends WebTestCase
         ;
 
         $crawler = $client->submit($form);
-
         $client->followRedirect();
         $this->assertStringContainsString('a bien été marquée comme faite', $client->getResponse()->getContent());
+
+        $taskRepository = static::$container->get(TaskRepository::class);
+        $this->assertEquals('1', $taskRepository->findOneBy(['id' => '1'])->getIsDone(), 'La tâche 1 n\'est pas marquée terminée');
     }
 
     public function testDeleteTask()

@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Form\UserType;
+use App\Service\UserManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +18,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users", name="user_list")
      */
-    public function listAction(UserRepository $userRepository)
+    public function listAction(UserRepository $userRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('user/list.html.twig', ['users' => $userRepository->findAll()]);
@@ -25,7 +27,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/create", name="user_create")
      */
-    public function createAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function createAction(Request $request, UserManagerInterface $userManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -35,17 +37,14 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = $form->get('password')->getData();
-            $password = $passwordEncoder->encodePassword($user, $plainPassword);
-            $user->setPassword($password);
-
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $entityManager->persist($user);
-            $entityManager->flush();
+            try {
+                $userManager->userForm($form, $user);
+            } catch (Exception $exception) {
+                $this->addFlash('error', $exception->getMessage() . 'Erreur Système, veuillez ré-essayer');
+                return $this->redirectToRoute('homepage');
+            }
 
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
-
             return $this->redirectToRoute('user_list');
         }
 
@@ -55,7 +54,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{id}/edit", name="user_edit")
      */
-    public function editAction(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function editAction(User $user, Request $request, UserManagerInterface $userManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -64,11 +63,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = $form->get('password')->getData();
-            $password = $passwordEncoder->encodePassword($user, $plainPassword);
-            $user->setPassword($password);
-
-            $this->getDoctrine()->getManager()->flush();
+            try {
+                $userManager->userForm($form, $user);
+            } catch (Exception $exception) {
+                $this->addFlash('error', $exception->getMessage() . 'Erreur Système, veuillez ré-essayer');
+                return $this->redirectToRoute('homepage');
+            }
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 

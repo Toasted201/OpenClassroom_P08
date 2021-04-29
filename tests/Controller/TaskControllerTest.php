@@ -11,6 +11,7 @@ class TaskControllerTest extends WebTestCase
 {
     public function testCreateTask()
     {
+        //login User pour test
         $client = static::createClient();
 
         $userRepository = static::$container->get(UserRepository::class);
@@ -18,6 +19,7 @@ class TaskControllerTest extends WebTestCase
 
         $client->loginUser($testUser);
 
+        //test formulaire valide
         $crawler = $client->request('GET', '/tasks/create');
 
         $form = $crawler->selectButton('Ajouter')->form(array(
@@ -32,6 +34,10 @@ class TaskControllerTest extends WebTestCase
         $this->assertStringContainsString('TestAuto', $client->getResponse()->getContent());
         $this->assertStringContainsString('La tâche a été bien été ajoutée.', $client->getResponse()->getContent());
 
+        $taskRepository = static::$container->get(TaskRepository::class);
+        $this->assertEquals('TestAuto title', $taskRepository->findOneBy(['title' => 'TestAuto title'])->getTitle());
+
+        //Test du CreatedAt
         $taskRepository = static::$container->get(TaskRepository::class);
         $task = $taskRepository->findOneBy(['id' => '7']);
 
@@ -91,7 +97,11 @@ class TaskControllerTest extends WebTestCase
         $this->assertStringContainsString('a bien été marquée comme faite', $client->getResponse()->getContent());
 
         $taskRepository = static::$container->get(TaskRepository::class);
-        $this->assertEquals('1', $taskRepository->findOneBy(['id' => '1'])->getIsDone(), 'La tâche 1 n\'est pas marquée terminée');
+        $this->assertEquals(
+            '1',
+            $taskRepository->findOneBy(['id' => '1'])->getIsDone(),
+            'La tâche 1 n\'est pas marquée terminée'
+        );
     }
 
     public function testDeleteTask()

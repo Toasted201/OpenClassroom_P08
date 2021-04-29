@@ -16,3 +16,4 @@
 ###< symfony/phpunit-bridge ###
 tests/test-coverage
 .vscode/launch.json
+reports/

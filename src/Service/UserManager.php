@@ -19,6 +19,10 @@ class UserManager implements UserManagerInterface
     }
 
 
+    /**
+     * @param FormInterface<string> $form
+     * @param User $user
+     */
     public function userForm(FormInterface $form, User $user): void
     {
         $plainPassword = $form->get('password')->getData();

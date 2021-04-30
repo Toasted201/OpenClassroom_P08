@@ -11,6 +11,8 @@ interface UserManagerInterface
     /**
      * Traitement du formulaire de création ou modification d'un User
      * @throws Exception
+     * @param FormInterface<string> $form
+     * @param User $user
      */
     public function userForm(FormInterface $form, User $user): void;
 }

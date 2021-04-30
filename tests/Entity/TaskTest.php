@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskTest extends WebTestCase
 {
-    public function testCreatedAt()
+    public function testCreatedAt(): void
     {
         $task = new Task();
         $newDate = new DateTime(date('2020-01-01 00:00:00'));
@@ -16,7 +16,7 @@ class TaskTest extends WebTestCase
         $this->assertEquals($newDate, $task->getCreatedAt());
     }
 
-    public function testisDone()
+    public function testisDone(): void
     {
         $task = new Task();
 

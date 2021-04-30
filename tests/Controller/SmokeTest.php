@@ -4,19 +4,25 @@ namespace Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Repository\UserRepository;
+use Exception;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class SmokeTest extends WebTestCase
 {
     /**
      * @dataProvider provideUrlsAdmin
      */
-    public function testPageIsSuccessful($pageName, $url)
+    public function testPageIsSuccessful(string $pageName, string $url): void
     {
         $client = static::createClient();
 
+        /** @var \App\Repository\UserRepository $userRepository*/
         $userRepository = static::$container->get(UserRepository::class);
         $testUser = $userRepository->findOneBy(['username' => 'BobDoe']);
 
+        if (!$testUser instanceof UserInterface) {
+            throw new Exception("Il n'y a pas de testUser pour se connecter", 1);
+        }
         $client->loginUser($testUser);
 
         //$client->catchExceptions(false);
@@ -36,13 +42,17 @@ class SmokeTest extends WebTestCase
     /**
      * @dataProvider provideUrlsUSer
      */
-    public function testPageIsUnsuccessful($pageName, $url)
+    public function testPageIsUnsuccessful(string $pageName, string $url): void
     {
         $client = static::createClient();
 
+        /** @var \App\Repository\UserRepository $userRepository*/
         $userRepository = static::$container->get(UserRepository::class);
         $testUser = $userRepository->findOneBy(['username' => 'DanyDoe']);
 
+        if (!$testUser instanceof UserInterface) {
+            throw new Exception("Il n'y a pas de testUser pour se connecter", 1);
+        }
         $client->loginUser($testUser);
 
         $client->request('GET', $url);
@@ -58,7 +68,10 @@ class SmokeTest extends WebTestCase
         );
     }
 
-    public function provideUrlsAdmin()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function provideUrlsAdmin(): array
     {
         return [
             'homepage' => ['homepage', '/'],
@@ -74,7 +87,10 @@ class SmokeTest extends WebTestCase
         ];
     }
 
-    public function provideUrlsUser()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function provideUrlsUser(): array
     {
         return [
             'user_list' => ['userListe', '/users'],

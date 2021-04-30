@@ -2,18 +2,24 @@
 
 namespace Tests\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserControllerTest extends WebTestCase
 {
-    public function testCreateUser()
+    public function testCreateUser(): void
     {
         $client = static::createClient();
-
+        /** @var \App\Repository\UserRepository $userRepository*/
         $userRepository = static::$container->get(UserRepository::class);
         $testUser = $userRepository->findOneBy(['username' => 'BobDoe']);
 
+        if (!$testUser instanceof UserInterface) {
+            throw new Exception("Il n'y a pas de testUser pour se connecter", 1);
+        }
         $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/users/create');
@@ -33,16 +39,21 @@ class UserControllerTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertStringContainsString('JohnDoe', $client->getResponse()->getContent());
-        $this->assertStringContainsString('utilisateur a bien été ajouté', $client->getResponse()->getContent());
+        $this->assertStringContainsString('JohnDoe', '' . $client->getResponse()->getContent());
+        $this->assertStringContainsString('utilisateur a bien été ajouté', '' . $client->getResponse()->getContent());
     }
 
-    public function testEditUser()
+    public function testEditUser(): void
     {
         $client = static::createClient();
 
+        /** @var \App\Repository\UserRepository $userRepository*/
         $userRepository = static::$container->get(UserRepository::class);
         $testUser = $userRepository->findOneBy(['username' => 'BobDoe']);
+
+        if (!$testUser instanceof UserInterface) {
+            throw new Exception("Il n'y a pas de testUser pour se connecter", 1);
+        }
 
         $client->loginUser($testUser);
 
@@ -62,9 +73,9 @@ class UserControllerTest extends WebTestCase
         $crawler = $client->submit($form);
 
         $client->followRedirect();
-        $this->assertStringContainsString('utilisateur a bien été modifié', $client->getResponse()->getContent());
+        $this->assertStringContainsString('utilisateur a bien été modifié', '' . $client->getResponse()->getContent());
 
         $crawler = $client->request('GET', '/users/3/edit');
-        $this->assertStringContainsString('JaneDoe', $client->getResponse()->getContent());
+        $this->assertStringContainsString('JaneDoe', '' . $client->getResponse()->getContent());
     }
 }

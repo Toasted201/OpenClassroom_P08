@@ -16,7 +16,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * @param FormBuilderInterface<string|FormBuilderInterface> $builder
+     * @param array<string> $option
+     * @return void
+     * @SuppressWarnings("unused")
+     */
+    public function buildForm(FormBuilderInterface $builder, array $option): void
     {
         $builder
             ->add('username', null, [
@@ -70,7 +76,7 @@ class UserType extends AbstractType
                     ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,

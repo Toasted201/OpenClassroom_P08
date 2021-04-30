@@ -1,0 +1,4 @@
+parameters:
+    checkGenericClassInNonGenericObjectType: false
+    # class App\Repository\UserRepository extends generic class Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository but does not specify its types: T
+    # You can turn this off by setting checkGenericClassInNonGenericObjectType: false in your phpstan.neon.  

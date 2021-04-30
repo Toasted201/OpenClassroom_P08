@@ -55,7 +55,7 @@ class TaskController extends AbstractController
     public function createAction(Request $request, TaskManagerInterface $taskManager): Response
     {
         $task = new Task();
-        
+
         $user = $this->getUser();
         if (!$user instanceof User) {
             throw new Exception();

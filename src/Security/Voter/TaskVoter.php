@@ -7,11 +7,9 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
-use LogicException;
 
 class TaskVoter extends Voter
 {
-    private const EDIT = 'edit';
     private const DELETE = 'delete';
 
     private Security $security;
@@ -24,7 +22,7 @@ class TaskVoter extends Voter
     protected function supports(string $attribute, $subject): bool
     {
         // if the attribute isn't one we support, return false
-        if (!in_array($attribute, [self::EDIT, self::DELETE])) {
+        if (!in_array($attribute, [self::DELETE])) {
             return false;
         }
 
@@ -36,6 +34,7 @@ class TaskVoter extends Voter
         return true;
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -45,27 +44,9 @@ class TaskVoter extends Voter
             return false;
         }
 
-        // you know $subject is a Task object, thanks to `supports()`
         /** @var Task $task */
         $task = $subject;
 
-        switch ($attribute) {
-            case self::EDIT:
-                return $this->canEdit($task, $user);
-            case self::DELETE:
-                return $this->canDelete($task, $user);
-        }
-
-        throw new LogicException('This code should not be reached!');
-    }
-
-    private function canEdit(Task $task, User $user): bool
-    {
-        return $user === $task->getUser();
-    }
-
-    private function canDelete(Task $task, User $user): bool
-    {
         if ($user === $task->getUser()) {
             return true;
         }

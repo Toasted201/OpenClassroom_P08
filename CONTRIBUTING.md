@@ -36,7 +36,7 @@ cd todolist
 git remote add upstream https://github.com/Toasted201/OpenClassroom_P08.git
 ```
 
-Si vous avez clonez le projet il y a quelques temps, pensez à récupérer les dernières modifications depuis upstream:
+Si vous avez cloné le projet il y a quelques temps, pensez à récupérer les dernières modifications depuis upstream:
 
 ```bash
 git checkout production
@@ -84,10 +84,12 @@ test: Ajout d'un nouveau test ou correction d'un test existant
 
 - Poussez votre branche sur votre repository :
 
-git push origin <branch-name> 
+```bash
+git push origin <branch-name>
+``` 
 Ouvrez une nouvelle pull request avec un titre et une description précises.
 
-Versionnement
+## Versionnement
 Les numéros de version respectent Semantic Versionning 2 :
 
 Given a version number MAJOR.MINOR.PATCH, increment the:
@@ -95,3 +97,10 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 - MAJOR version when you make incompatible API changes,
 - MINOR version when you add functionality in a backwards-compatible manner, and
 - PATCH version when you make backwards-compatible bug fixes.
+
+## Bonnes pratiques de développement
+
+Les bonnes pratiques de développement courante s'appliquent au projet:
+- Le [PSR-12](https://www.php-fig.org/psr/psr-12/)
+- Les [bonnes pratiques de Symfony](https://symfony.com/doc/current/best_practices.html)
+- Les principes SOLID

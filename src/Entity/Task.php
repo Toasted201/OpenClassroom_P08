@@ -44,7 +44,6 @@ class Task
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=true)
      */
     private ?User $user;
 
@@ -52,6 +51,7 @@ class Task
     {
         $this->createdAt = new DateTime();
         $this->isDone = false;
+        $this->user = null;
     }
 
     public function getId(): ?int

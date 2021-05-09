@@ -22,14 +22,6 @@
 
 		<!-- Use fontawesome instead of dropped component Glyphicon -->
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-
-		{% block stylesheets %}
-			{#{{ encore_entry_link_tags('app') }}#}
-		{% endblock %}
-
-		{% block javascripts %}
-			{#{{ encore_entry_script_tags('app') }}#}
-		{% endblock %}
 	</head>
 
     <body>
@@ -95,8 +87,12 @@
 
         </div>
 
-        <script src="{{ asset('js/jquery.js') }}"></script>
-        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+		{% block stylesheets %}
+			<script src="{{ asset('js/jquery.js') }}"></script>
+		{% endblock %}
 
+		{% block javascripts %}
+			<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+		{% endblock %}
     </body>
 </html>

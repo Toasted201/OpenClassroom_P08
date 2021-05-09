@@ -20,15 +20,11 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('title', null, [
-                'label' => "Titre"
+                'label' => 'Titre'
             ])
-            ->add(
-                'content',
-                TextareaType::class,
-                ['label' => 'Contenu'
-                ]
-            )
-        ;
+            ->add('content', TextareaType::class, [
+                'label' => 'Contenu'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

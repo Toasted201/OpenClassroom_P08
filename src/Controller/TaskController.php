@@ -3,18 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Task;
-use App\Entity\User;
 use App\Repository\TaskRepository;
 use App\Form\TaskType;
-use App\Security\TaskVoter;
 use App\Service\TaskManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController extends AbstractController
 {
@@ -56,17 +52,13 @@ class TaskController extends AbstractController
     {
         $task = new Task();
 
-        $user = $this->getUser();
-        if (!$user instanceof User) {
-            throw new Exception();
-        }
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $taskManager->createTask($task, $user);
+                $taskManager->createTask($task);
             } catch (Exception $exception) {
                 $this->addFlash('error', $exception->getMessage() . 'Erreur Système : veuillez ré-essayer');
                 return $this->redirectToRoute('homepage');

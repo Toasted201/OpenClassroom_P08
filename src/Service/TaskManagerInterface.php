@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Task;
-use App\Entity\User;
 use Exception;
 
 interface TaskManagerInterface
@@ -12,7 +11,7 @@ interface TaskManagerInterface
      * Création d'une tâche
      * @throws Exception
      */
-    public function createTask(Task $task, User $user): void;
+    public function createTask(Task $task): void;
 
     /**
      * Modification du statut terminée

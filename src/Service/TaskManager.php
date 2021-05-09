@@ -7,6 +7,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class TaskManager implements TaskManagerInterface
 {
@@ -22,7 +23,7 @@ class TaskManager implements TaskManagerInterface
     public function createTask(Task $task): void
     {
         $token = $this->tokenStorage->getToken();
-        if (!$token instanceof TokenStorageInterface) {
+        if (!$token instanceof TokenInterface) {
             throw new Exception();
         }
         $user = $token->getUser();

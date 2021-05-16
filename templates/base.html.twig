@@ -12,17 +12,15 @@
 			{% endblock %}
 		</title>
 
+		{% block stylesheets %}
 		<!-- Bootstrap Core CSS -->
-		<link
-		href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-
+		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 		<!-- Custom CSS -->
-		<link
-		href="{{ asset('css/shop-homepage.css') }}" rel="stylesheet">
-
+		<link href="{{ asset('css/shop-homepage.css') }}" rel="stylesheet">
 		<!-- Use fontawesome instead of dropped component Glyphicon -->
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-	</head>
+        {% endblock %}
+    </head>
 
     <body>
         <nav class="navbar navbar-light navbar-fixed-top navbar-expand-lg" style="background-color: #e3f2fd;" role="navigation">
@@ -87,11 +85,10 @@
 
         </div>
 
-		{% block stylesheets %}
-			<script src="{{ asset('js/jquery.js') }}"></script>
-		{% endblock %}
+
 
 		{% block javascripts %}
+            <script src="{{ asset('js/jquery.js') }}"></script>
 			<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 		{% endblock %}
     </body>

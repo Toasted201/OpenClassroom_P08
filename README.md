@@ -102,6 +102,7 @@ Renseigner les informations de connexion à la base de données de test dans le 
 
 ## Versions
 - V1.0.0 : First Version
+- V1.0.1 : Customize error pages
 
 
 ## CodeClimate

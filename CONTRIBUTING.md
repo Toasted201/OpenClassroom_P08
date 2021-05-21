@@ -22,7 +22,8 @@ Il est toujours apprécié de proposer de nouvelles fonctionnalités. Cependant,
 C'est à vous de présenter des arguments solides pour convaincre les développeurs du projet des bienfaits de cette fonctionnalité.
 
 ## Pull request
-De bonnes pull requests sont d'une grande aide. Elles doivent rester dans le cadre du projet et ne doit pas contenir de commits non lié au projet.
+De bonnes pull requests sont d'une grande aide. 
+Elles doivent rester dans le cadre du projet, ne doivent pas contenir de commits non lié au projet.
 
 Veuillez demander avant de poster votre pull request, autrement vous risquez de passer gaspiller du temps de travail car l'équipe projet ne souhaite pas intégrer votre travail.
 
@@ -59,6 +60,13 @@ Pour une nouvelle correction :
 git checkout production
 git checkout -b hotfix/<feature-name>
 ```
+- Tester vos changements pour évous assurer qu'ils ne génèrent pas de régression
+Exécuter la commande composer : 
+```bash
+composer run-script phpunit-start-test --dev
+```
+Elle créera la base de test, y ajoute un lot de données, puis lance les tests PhpUnit.
+Ils doivent tous être OK avant le commit.
 
 - Commit vos changements:  veuillez à respecter la convention de nommage de vos commits de la manière suivante :
 

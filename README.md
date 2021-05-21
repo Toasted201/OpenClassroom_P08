@@ -80,6 +80,8 @@ mot de passe : passpass
 Modifier les informations de connexion dans un fichier /.env.local à mettre à la racine du projet.
 - Base de données : doctrine/doctrine-bundle
 
+Renseigner les informations de connexion à la base de données de test dans le fichier .env/test à la racine du projet
+
 
 ## Fabriqué avec
 

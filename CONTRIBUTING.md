@@ -63,12 +63,13 @@ Elle créera la base de test, y ajoute un lot de données, puis lance les tests 
 Ils doivent tous être OK avant le commit.
 
 - Commit vos changements:  veuillez à respecter la convention de nommage de vos commits de la manière suivante :
-
+```bash
 <type>: <subject>
 <BLANK LINE>
 <body>
 <BLANK LINE>
 <footer>
+```
 L'en-tête est obligatoire.
 
 Types :

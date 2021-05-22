@@ -29,38 +29,32 @@ Veuillez demander avant de poster votre pull request, autrement vous risquez de 
 
 Suivez ce processus afin de proposer une pull request qui respecte les bonnes pratiques :
 
-- Fork le projet, clonez votre fork et configurez les remotes:
+- Installez le projet en suivant le Readme.md
+
+- Si vous avez cloné le projet il y a quelques temps, pensez à récupérer les dernières modifications:
 
 ```bash
-git clone https://github.com/<your-username>/<repo-name>
-cd todolist
-git remote add upstream https://github.com/Toasted201/OpenClassroom_P08.git
-```
+git checkout main
+git pull
 
-Si vous avez cloné le projet il y a quelques temps, pensez à récupérer les dernières modifications depuis upstream:
-
-```bash
-git checkout production
-git pull upstream production
-
-git checkout develop
-git pull upstream develop
+git checkout dev
+git pull
 ```
 
 - Créez une nouvelle branche qui contiendra votre fonctionnalité, modification ou correction :
 
 Pour une nouvelle fonctionnalité ou modification :
 ```bash
-git checkout develop
+git checkout dev
 git checkout -b feature/<feature-name>
 ```
 
 Pour une nouvelle correction :
 ```bash
-git checkout production
+git checkout main
 git checkout -b hotfix/<feature-name>
 ```
-- Tester vos changements pour évous assurer qu'ils ne génèrent pas de régression
+- Tester vos changements pour vous assurer qu'ils ne génèrent pas de régression
 Exécuter la commande composer : 
 ```bash
 composer run-script phpunit-start-test --dev
@@ -108,7 +102,7 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 
 ## Bonnes pratiques de développement
 
-Les bonnes pratiques de développement courante s'appliquent au projet:
+Les bonnes pratiques de développement courantes s'appliquent au projet:
 - Le [PSR-12](https://www.php-fig.org/psr/psr-12/)
 - Les [bonnes pratiques de Symfony](https://symfony.com/doc/current/best_practices.html)
 - Les principes SOLID
